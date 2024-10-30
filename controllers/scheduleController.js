@@ -86,8 +86,8 @@ exports.deleteEvent = async (req, res) => {
 // Daily cron job to send notifications for today's events
 const cron = require('node-cron');
 
-cron.schedule('* * * * *', async () => { // Testing: runs every minute
-    const today = new Date().toLocaleDateString('en-CA'); // Formats 'YYYY-MM-DD' based on server's timezone
+cron.schedule('0 8 * * *', async () => { // Runs at 8:00 AM server time every day
+    const today = new Date().toLocaleDateString('en-CA'); // Formats 'YYYY-MM-DD' in server's timezone
     console.log("Today's date (server timezone):", today);
 
     try {
