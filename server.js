@@ -10,6 +10,7 @@ const bookingRoutes = require('./routes/bookingRoutes');
 const scheduleRoutes = require('./routes/scheduleRoutes');
 const attendanceRoutes = require('./routes/attendanceRoutes');
 const qualificationsRoutes = require('./routes/qualificationRoutes');
+const publicRoutes = require('./routes/publicRoutes');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -26,6 +27,7 @@ app.use('/api/bookings', bookingRoutes);
 app.use('/api/schedule', scheduleRoutes);
 app.use('/api/attendance', attendanceRoutes);
 app.use('/api/qualifications', qualificationsRoutes);
+app.use('/api/public/', publicRoutes);
 // Start server
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
