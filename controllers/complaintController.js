@@ -94,7 +94,7 @@ exports.reappealComplaint = async (req, res) => {
         }
 
         // Update complaint status to 'reappealed'
-        await db.query('UPDATE complaints SET status = "reappealed" WHERE id = ?', [id]);
+        await db.query('UPDATE complaints SET status = ? WHERE id = ?', ['reappealed', id]);
         res.status(200).json({ message: 'Complaint reappealed successfully' });
     } catch (error) {
         console.error('Error reappealing complaint:', error);
