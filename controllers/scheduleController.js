@@ -122,3 +122,14 @@ cron.schedule('0 8 * * *', async () => { // Runs at 8:00 AM server time every da
         console.error('Error in daily cron job:', error);
     }
 });
+exports.getAllScheduledEvents = async (req, res) => {
+    try {
+        const events = await db.query(
+            'SELECT * FROM schedule ORDER BY date, time'
+        );
+        res.json(events);
+    } catch (error) {
+        console.error('Error fetching scheduled events:', error);
+        res.status(500).json({ error: 'Failed to fetch scheduled events' });
+    }
+};
