@@ -3,10 +3,10 @@ const mysql = require('mysql2');
 class Database {
     constructor() {
         this.db = mysql.createConnection({
-            host: 'localhost',       // Replace with your MySQL host, e.g., 'localhost'
-            user: 'root',   // Replace with your MySQL username
-            password: 'Admin@123', // Replace with your MySQL password
-            database: 'inyamibwa'    // Replace with your database name
+            host: 'localhost',
+            user: 'root',
+            password: 'Admin@123',
+            database: 'inyamibwa'
         });
 
         this.db.connect(err => {
@@ -15,6 +15,15 @@ class Database {
                 throw err;
             }
             console.log('MySQL connected');
+
+            // Set max_allowed_packet to 100MB (104857600 bytes)
+            this.db.query('SET GLOBAL max_allowed_packet = 104857600', (err) => {
+                if (err) {
+                    console.error('Error setting max_allowed_packet:', err);
+                } else {
+                    console.log('max_allowed_packet set to 100MB');
+                }
+            });
         });
     }
 

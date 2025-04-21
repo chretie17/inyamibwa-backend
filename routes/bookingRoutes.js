@@ -14,8 +14,9 @@ router.post('/book', bookingController.bookEvent);
 // Route to get all bookings (Admin)
 router.get('/', bookingController.getAllBookings);
 router.put('/approve/:id', bookingController.approveBooking);
-
+router.get('/booked-dates', bookingController.getBookedDates);
 router.put('/reject/:id', bookingController.rejectBooking);
+router.delete('/:id', bookingController.deleteEventType);
 
 
 module.exports = router;

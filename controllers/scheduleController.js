@@ -5,8 +5,8 @@ const nodemailer = require('nodemailer');
 const transporter = nodemailer.createTransport({
     service: 'Gmail', // Update to your email service
     auth: {
-        user: 'turachretien@gmail.com',
-        pass: 'ruix vmny qntx ywos'
+        user: 'rutagengwanatasha@gmail.com', // Replace with your Gmail
+        pass: 'jstw tsdl lypf pcjc', // Replace with your app password
     }
 });
 
@@ -101,7 +101,7 @@ cron.schedule('0 8 * * *', async () => { // Runs at 8:00 AM server time every da
 
             users.forEach(user => {
                 const mailOptions = {
-                    from: 'turachretien@gmail.com',
+                    from: 'rutagengwanatasha@gmail.com',
                     to: user.email,
                     subject: `Today's Event Reminder`,
                     text: `Hi, here are the events scheduled for today:\n\n${events.map(event => `${event.title} at ${event.venue} - ${event.time}`).join('\n')}`

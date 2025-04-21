@@ -5,8 +5,8 @@ const nodemailer = require('nodemailer');
 const transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
-        user: 'turachretien@gmail.com', // Replace with your Gmail
-        pass: 'ruix vmny qntx ywos', // Replace with your app password
+        user: 'rutagengwanatasha@gmail.com', // Replace with your Gmail
+        pass: 'jstw tsdl lypf pcjc', // Replace with your app password
     }
 });
 
@@ -497,6 +497,71 @@ exports.deleteBooking = async (req, res) => {
     } catch (error) {
         console.error('Error deleting booking:', error);
         res.status(500).json({ error: 'Failed to delete booking' });
+    }
+};
+// Delete an event type
+exports.deleteEventType = async (req, res) => {
+    const { id } = req.params;
+    try {
+        // First check if there are any bookings using this event type
+        const [bookings] = await db.query(
+            'SELECT COUNT(*) as count FROM bookings WHERE event_type_id = ?', 
+            [id]
+        );
+        
+        if (bookings.count > 0) {
+            return res.status(400).json({ 
+                error: 'Cannot delete event type that has associated bookings',
+                bookingsCount: bookings.count
+            });
+        }
+        
+        // If no bookings use this event type, proceed with deletion
+        const result = await db.query('DELETE FROM event_types WHERE id = ?', [id]);
+        
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: 'Event type not found' });
+        }
+        
+        res.json({ 
+            message: 'Event type deleted successfully',
+            deletedId: id
+        });
+    } catch (error) {
+        console.error('Error deleting event type:', error);
+        res.status(500).json({ error: 'Failed to delete event type' });
+    }
+};
+// Get all booked dates for a specific event type
+exports.getBookedDates = async (req, res) => {
+    try {
+        const eventTypeId = req.query.event_type_id;
+        
+        let query = `
+            SELECT DISTINCT DATE_FORMAT(event_date, '%Y-%m-%d') AS booked_date
+            FROM bookings
+            WHERE (status = 'approved' OR status = 'pending')
+        `;
+        
+        let params = [];
+        
+        // Add event type filter if provided
+        if (eventTypeId) {
+            query += ' AND event_type_id = ?';
+            params.push(eventTypeId);
+        }
+            
+        query += ' ORDER BY booked_date ASC';
+        
+        const results = await db.query(query, params);
+        
+        // Transform results into a simple array of dates
+        const bookedDates = results.map(item => item.booked_date);
+        
+        res.json(bookedDates);
+    } catch (error) {
+        console.error('Error fetching booked dates:', error);
+        res.status(500).json({ error: 'Failed to fetch booked dates' });
     }
 };
 
